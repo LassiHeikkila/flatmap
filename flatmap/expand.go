@@ -5,8 +5,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-
-	"github.com/hashicorp/terraform/configs/hcl2shim"
 )
 
 // Expand takes a map and a key (prefix) and expands that value into
@@ -24,14 +22,7 @@ func Expand(m map[string]string, key string) interface{} {
 	}
 
 	// Check if the key is an array, and if so, expand the array
-	if v, ok := m[key+".#"]; ok {
-		// If the count of the key is unknown, then just put the unknown
-		// value in the value itself. This will be detected by Terraform
-		// core later.
-		if v == hcl2shim.UnknownVariableValue {
-			return v
-		}
-
+	if _, ok := m[key+".#"]; ok {
 		return expandArray(m, key)
 	}
 

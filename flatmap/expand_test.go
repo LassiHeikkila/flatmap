@@ -3,8 +3,6 @@ package flatmap
 import (
 	"reflect"
 	"testing"
-
-	"github.com/hashicorp/terraform/configs/hcl2shim"
 )
 
 func TestExpand(t *testing.T) {
@@ -164,21 +162,6 @@ func TestExpand(t *testing.T) {
 			Key: "computed_set",
 			Output: []interface{}{
 				map[string]interface{}{"a": "a", "b": "b", "c": "c"},
-			},
-		},
-
-		{
-			Map: map[string]string{
-				"struct.#":         "1",
-				"struct.0.name":    "hello",
-				"struct.0.rules.#": hcl2shim.UnknownVariableValue,
-			},
-			Key: "struct",
-			Output: []interface{}{
-				map[string]interface{}{
-					"name":  "hello",
-					"rules": hcl2shim.UnknownVariableValue,
-				},
 			},
 		},
 
