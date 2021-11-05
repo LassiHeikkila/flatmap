@@ -22,7 +22,7 @@ func Flatten(thing map[string]interface{}) Map {
 	return Map(result)
 }
 
-func flatten(result map[string]interface{}, prefix string, v reflect.Value) {
+func flatten(result Map, prefix string, v reflect.Value) {
 	if v.Kind() == reflect.Interface {
 		v = v.Elem()
 	}
@@ -30,12 +30,14 @@ func flatten(result map[string]interface{}, prefix string, v reflect.Value) {
 	switch v.Kind() {
 	case reflect.Bool:
 		if v.Bool() {
-			result[prefix] = "true"
+			result[prefix] = true
 		} else {
-			result[prefix] = "false"
+			result[prefix] = false
 		}
 	case reflect.Int:
-		result[prefix] = fmt.Sprintf("%d", v.Int())
+		result[prefix] = v.Int()
+	case reflect.Float64:
+		result[prefix] = v.Float()
 	case reflect.Map:
 		flattenMap(result, prefix, v)
 	case reflect.Slice:
@@ -47,7 +49,7 @@ func flatten(result map[string]interface{}, prefix string, v reflect.Value) {
 	}
 }
 
-func flattenMap(result map[string]interface{}, prefix string, v reflect.Value) {
+func flattenMap(result Map, prefix string, v reflect.Value) {
 	for _, k := range v.MapKeys() {
 		if k.Kind() == reflect.Interface {
 			k = k.Elem()
@@ -61,10 +63,10 @@ func flattenMap(result map[string]interface{}, prefix string, v reflect.Value) {
 	}
 }
 
-func flattenSlice(result map[string]interface{}, prefix string, v reflect.Value) {
+func flattenSlice(result Map, prefix string, v reflect.Value) {
 	prefix = prefix + "."
 
-	result[prefix+"#"] = fmt.Sprintf("%d", v.Len())
+	result[prefix+"#"] = v.Len()
 	for i := 0; i < v.Len(); i++ {
 		flatten(result, fmt.Sprintf("%s%d", prefix, i), v.Index(i))
 	}

@@ -3,19 +3,21 @@ package flatmap
 import (
 	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestFlatten(t *testing.T) {
 	cases := []struct {
 		Input  map[string]interface{}
-		Output map[string]interface{}
+		Output Map
 	}{
 		{
 			Input: map[string]interface{}{
 				"foo": "bar",
 				"bar": "baz",
 			},
-			Output: map[string]interface{}{
+			Output: Map{
 				"foo": "bar",
 				"bar": "baz",
 			},
@@ -28,8 +30,8 @@ func TestFlatten(t *testing.T) {
 					"two",
 				},
 			},
-			Output: map[string]interface{}{
-				"foo.#": "2",
+			Output: Map{
+				"foo.#": 2,
 				"foo.0": "one",
 				"foo.1": "two",
 			},
@@ -45,11 +47,11 @@ func TestFlatten(t *testing.T) {
 					},
 				},
 			},
-			Output: map[string]interface{}{
-				"foo.#":         "1",
+			Output: Map{
+				"foo.#":         1,
 				"foo.0.name":    "bar",
-				"foo.0.port":    "3000",
-				"foo.0.enabled": "true",
+				"foo.0.port":    int64(3000),
+				"foo.0.enabled": true,
 			},
 		},
 
@@ -65,10 +67,10 @@ func TestFlatten(t *testing.T) {
 					},
 				},
 			},
-			Output: map[string]interface{}{
-				"foo.#":         "1",
+			Output: Map{
+				"foo.#":         1,
 				"foo.0.name":    "bar",
-				"foo.0.ports.#": "2",
+				"foo.0.ports.#": 2,
 				"foo.0.ports.0": "1",
 				"foo.0.ports.1": "2",
 			},
@@ -77,12 +79,8 @@ func TestFlatten(t *testing.T) {
 
 	for _, tc := range cases {
 		actual := Flatten(tc.Input)
-		if !reflect.DeepEqual(actual, Map(tc.Output)) {
-			t.Fatalf(
-				"Input:\n\n%#v\n\nOutput:\n\n%#v\n\nExpected:\n\n%#v\n",
-				tc.Input,
-				actual,
-				tc.Output)
+		if !reflect.DeepEqual(actual, tc.Output) {
+			t.Fatal(cmp.Diff(actual, tc.Output))
 		}
 	}
 }
