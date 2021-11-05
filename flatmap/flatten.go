@@ -13,7 +13,7 @@ import (
 //
 // See the tests for examples of what inputs are turned into.
 func Flatten(thing map[string]interface{}) Map {
-	result := make(map[string]string)
+	result := make(map[string]interface{})
 
 	for k, raw := range thing {
 		flatten(result, k, reflect.ValueOf(raw))
@@ -22,7 +22,7 @@ func Flatten(thing map[string]interface{}) Map {
 	return Map(result)
 }
 
-func flatten(result map[string]string, prefix string, v reflect.Value) {
+func flatten(result map[string]interface{}, prefix string, v reflect.Value) {
 	if v.Kind() == reflect.Interface {
 		v = v.Elem()
 	}
@@ -47,7 +47,7 @@ func flatten(result map[string]string, prefix string, v reflect.Value) {
 	}
 }
 
-func flattenMap(result map[string]string, prefix string, v reflect.Value) {
+func flattenMap(result map[string]interface{}, prefix string, v reflect.Value) {
 	for _, k := range v.MapKeys() {
 		if k.Kind() == reflect.Interface {
 			k = k.Elem()
@@ -61,7 +61,7 @@ func flattenMap(result map[string]string, prefix string, v reflect.Value) {
 	}
 }
 
-func flattenSlice(result map[string]string, prefix string, v reflect.Value) {
+func flattenSlice(result map[string]interface{}, prefix string, v reflect.Value) {
 	prefix = prefix + "."
 
 	result[prefix+"#"] = fmt.Sprintf("%d", v.Len())

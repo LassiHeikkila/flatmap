@@ -8,14 +8,14 @@ import (
 func TestFlatten(t *testing.T) {
 	cases := []struct {
 		Input  map[string]interface{}
-		Output map[string]string
+		Output map[string]interface{}
 	}{
 		{
 			Input: map[string]interface{}{
 				"foo": "bar",
 				"bar": "baz",
 			},
-			Output: map[string]string{
+			Output: map[string]interface{}{
 				"foo": "bar",
 				"bar": "baz",
 			},
@@ -28,7 +28,7 @@ func TestFlatten(t *testing.T) {
 					"two",
 				},
 			},
-			Output: map[string]string{
+			Output: map[string]interface{}{
 				"foo.#": "2",
 				"foo.0": "one",
 				"foo.1": "two",
@@ -45,7 +45,7 @@ func TestFlatten(t *testing.T) {
 					},
 				},
 			},
-			Output: map[string]string{
+			Output: map[string]interface{}{
 				"foo.#":         "1",
 				"foo.0.name":    "bar",
 				"foo.0.port":    "3000",
@@ -65,7 +65,7 @@ func TestFlatten(t *testing.T) {
 					},
 				},
 			},
-			Output: map[string]string{
+			Output: map[string]interface{}{
 				"foo.#":         "1",
 				"foo.0.name":    "bar",
 				"foo.0.ports.#": "2",

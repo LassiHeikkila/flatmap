@@ -8,12 +8,12 @@ import (
 
 func TestMapContains(t *testing.T) {
 	cases := []struct {
-		Input  map[string]string
+		Input  map[string]interface{}
 		Key    string
 		Result bool
 	}{
 		{
-			Input: map[string]string{
+			Input: map[string]interface{}{
 				"foo": "bar",
 				"bar": "nope",
 			},
@@ -22,7 +22,7 @@ func TestMapContains(t *testing.T) {
 		},
 
 		{
-			Input: map[string]string{
+			Input: map[string]interface{}{
 				"foo": "bar",
 				"bar": "nope",
 			},
@@ -51,7 +51,7 @@ func TestMapDelete(t *testing.T) {
 
 	m.Delete("routes")
 
-	expected := Map(map[string]string{"foo": "bar"})
+	expected := Map(map[string]interface{}{"foo": "bar"})
 	if !reflect.DeepEqual(m, expected) {
 		t.Fatalf("bad: %#v", m)
 	}
@@ -59,11 +59,11 @@ func TestMapDelete(t *testing.T) {
 
 func TestMapKeys(t *testing.T) {
 	cases := []struct {
-		Input  map[string]string
+		Input  map[string]interface{}
 		Output []string
 	}{
 		{
-			Input: map[string]string{
+			Input: map[string]interface{}{
 				"foo":       "bar",
 				"bar.#":     "bar",
 				"bar.0.foo": "bar",
@@ -90,20 +90,20 @@ func TestMapKeys(t *testing.T) {
 
 func TestMapMerge(t *testing.T) {
 	cases := []struct {
-		One    map[string]string
-		Two    map[string]string
-		Result map[string]string
+		One    map[string]interface{}
+		Two    map[string]interface{}
+		Result map[string]interface{}
 	}{
 		{
-			One: map[string]string{
+			One: map[string]interface{}{
 				"foo": "bar",
 				"bar": "nope",
 			},
-			Two: map[string]string{
+			Two: map[string]interface{}{
 				"bar": "baz",
 				"baz": "buz",
 			},
-			Result: map[string]string{
+			Result: map[string]interface{}{
 				"foo": "bar",
 				"bar": "baz",
 				"baz": "buz",

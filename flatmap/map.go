@@ -4,13 +4,13 @@ import (
 	"strings"
 )
 
-// Map is a wrapper around map[string]string that provides some helpers
+// Map is a wrapper around map[string]interface{} that provides some helpers
 // above it that assume the map is in the format that flatmap expects
 // (the result of Flatten).
 //
 // All modifying functions such as Delete are done in-place unless
 // otherwise noted.
-type Map map[string]string
+type Map map[string]interface{}
 
 // Contains returns true if the map contains the given key.
 func (m Map) Contains(key string) bool {
