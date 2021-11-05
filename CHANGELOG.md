@@ -1,3 +1,7 @@
+## 0.14.12 (November 11, 2021)
+
+Delete everything unrelated to `flatmap` and rename go.mod to `github.com/LassiHeikkila/flatmap`
+
 ## 0.14.11 (April 26, 2021)
 
 ENHANCEMENTS:
@@ -92,7 +96,7 @@ ENHANCEMENTS:
 * `terraform output`: Now supports a new "raw" mode, activated by the `-raw` option, for printing out the raw string representation of a particular output value. ([#27212](https://github.com/hashicorp/terraform/issues/27212))
 
     Only primitive-typed values have a string representation, so this formatting mode is not compatible with complex types. The `-json` mode is still available as a general way to get a machine-readable representation of an output value of any type.
-    
+
 * config: `for_each` now allows maps whose _element values_ are sensitive, as long as the element keys and the map itself are not sensitive. ([#27247](https://github.com/hashicorp/terraform/issues/27247))
 
 BUG FIXES:
@@ -186,7 +190,7 @@ BUG FIXES:
 * `terraform taint` and `terraform untaint`: Fix issue when using `taint` (and `untaint`) with workspaces where statefile was not found. ([#22467](https://github.com/hashicorp/terraform/issues/22467))
 * `terraform init`: Fix locksfile constraint output for versions like "1.2". ([#26637](https://github.com/hashicorp/terraform/issues/26637))
 * `terraform init`: Omit duplicate version constraints when installing packages or writing locksfile. ([#26678](https://github.com/hashicorp/terraform/issues/26678))
-* cli: return an error on a state unlock failure [[#25729](https://github.com/hashicorp/terraform/issues/25729)] 
+* cli: return an error on a state unlock failure [[#25729](https://github.com/hashicorp/terraform/issues/25729)]
 * core: Prevent "Inconsistent Plan" errors when using dynamic with a block of TypeSet ([#26638](https://github.com/hashicorp/terraform/issues/26638))
 * core: Errors with data sources reading old data during refresh, failing to refresh, and not appearing to wait on resource dependencies are fixed by updates to the data source lifecycle and the merging of refresh and plan ([#26270](https://github.com/hashicorp/terraform/issues/26270))
 * core: Prevent evaluation of deposed instances, which in turn prevents errors when referencing create_before_destroy resources that have changes to their count or for_each values ([#25631](https://github.com/hashicorp/terraform/issues/25631))
@@ -204,13 +208,13 @@ _Experiments_ are Terraform language features that are not yet finalized but tha
 * `module_variable_optional_attrs`: When declaring an input variable for a module whose type constraint (`type` argument) contains an object type constraint, the type expressions for the attributes can be annotated with the experimental `optional(...)` modifier.
 
     Marking an attribute as "optional" changes the type conversion behavior for that type constraint so that if the given value is a map or object that has no attribute of that name then Terraform will silently give that attribute the value `null`, rather than returning an error saying that it is required. The resulting value still conforms to the type constraint in that the attribute is considered to be present, but references to it in the recieving module will find a null value and can act on that accordingly.
-    
+
     This experiment also includes a function named `defaults` which you can use in a local value to replace the null values representing optional attributes with non-null default values. The function also requires that you enable the `module_variable_optional_attrs` experiment for any module which calls it.
-    
+
 * `provider_sensitive_attrs`: This is an unusual experiment in that it doesn't directly allow you to use a new feature in your module configuration but instead it changes the automatic behavior of Terraform in modules where it's enabled.
 
     For modules where this experiment is active, Terraform will consider the attribute sensitivity flags set in provider resource type schemas when propagating the "sensitive" flag through expressions in the configuration. This is experimental because it has the potential to make far more items in the output be marked as sensitive than before, and so we want to get some experience and feedback about it before hopefully making this the default behavior.
-    
+
     One important consequence of enabling this experiment is that you may need to mark more of your module's output values as `sensitive = true`, in any case where a particular output value is derived from a value a provider has indicated as being sensitive. Without that explicit annotation, Terraform will return an error to avoid implicitly exposing a sensitive value via an output value.
 
 If you try either of these features during their experimental periods and have feedback about them, please open a feature request issue. We are aiming to stabilize both features in the forthcoming v0.15 release, but their design may change in the meantime based on feedback. If we make further changes to the features during the v0.15 period then they will be reflected in v0.15 alpha releases.
