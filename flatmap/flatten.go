@@ -28,6 +28,8 @@ func flatten(result Map, prefix string, v reflect.Value) {
 	}
 
 	switch v.Kind() {
+	case reflect.Invalid:
+		result[prefix] = nil
 	case reflect.Bool:
 		if v.Bool() {
 			result[prefix] = true
@@ -35,7 +37,27 @@ func flatten(result Map, prefix string, v reflect.Value) {
 			result[prefix] = false
 		}
 	case reflect.Int:
-		result[prefix] = v.Int()
+		result[prefix] = int(v.Int())
+	case reflect.Int8:
+		result[prefix] = int8(v.Int())
+	case reflect.Int16:
+		result[prefix] = int16(v.Int())
+	case reflect.Int32:
+		result[prefix] = int32(v.Int())
+	case reflect.Int64:
+		result[prefix] = int64(v.Int())
+	case reflect.Uint:
+		result[prefix] = uint(v.Uint())
+	case reflect.Uint8:
+		result[prefix] = uint8(v.Uint())
+	case reflect.Uint16:
+		result[prefix] = uint16(v.Uint())
+	case reflect.Uint32:
+		result[prefix] = uint32(v.Uint())
+	case reflect.Uint64:
+		result[prefix] = uint64(v.Uint())
+	case reflect.Float32:
+		result[prefix] = float32(v.Float())
 	case reflect.Float64:
 		result[prefix] = v.Float()
 	case reflect.Map:
@@ -44,8 +66,17 @@ func flatten(result Map, prefix string, v reflect.Value) {
 		flattenSlice(result, prefix, v)
 	case reflect.String:
 		result[prefix] = v.String()
+	case reflect.Complex64:
+		result[prefix] = complex64(v.Complex())
+	case reflect.Complex128:
+		result[prefix] = v.Complex()
+	case reflect.Chan, reflect.Func, reflect.Ptr, reflect.UnsafePointer:
+		result[prefix] = v.Pointer()
+	case reflect.Uintptr:
+		result[prefix] = v.Uint()
 	default:
-		panic(fmt.Sprintf("Unknown: %s", v))
+		// should just ignore the rest
+		return
 	}
 }
 

@@ -50,7 +50,7 @@ func TestFlatten(t *testing.T) {
 			Output: Map{
 				"foo.#":         1,
 				"foo.0.name":    "bar",
-				"foo.0.port":    int64(3000),
+				"foo.0.port":    3000,
 				"foo.0.enabled": true,
 			},
 		},
